@@ -56,4 +56,24 @@ router.delete('/:id', (req, res) => {
       })
 })
 
+// PUT
+router.put('/:id', (req, res) => {
+   const carId = req.params.id;
+   const updates = req.body;
+
+   db('cars')
+      .where({ id: carId })
+      .update(updates)
+      .then(count => {
+         if (count > 0) { // Validation
+            res.status(200).json(count);
+         } else {
+            res.status(400).json({ message: "Car could not be deleted." });
+         }
+      })
+      .catch(error => {
+         res.status(500).json({ message: 'Problem updating the car' });
+      })
+})
+
 module.exports = router;
